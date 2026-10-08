@@ -5,6 +5,10 @@
 - **Decisores:** Sofia (Segurança), com Larissa, Diego e Bruno
 - **Relacionados:** [ADR-005](ADR-005-entrega-at-least-once-com-x-event-id.md)
 
+## Status
+
+Aceito (sujeito à revisão de segurança antes do deploy)
+
 ## Contexto
 
 Os webhooks enviam dados de pedidos para endpoints fora da nossa infraestrutura. O cliente precisa conseguir provar que a requisição veio da plataforma e que o corpo não foi adulterado no caminho ([09:19] Sofia). Já houve cliente que vazou secret em log de aplicação ([09:22] Diego).

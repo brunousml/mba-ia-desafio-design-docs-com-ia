@@ -5,6 +5,10 @@
 - **Decisores:** Larissa, Diego, Bruno; Marcos validou a janela
 - **Relacionados:** [ADR-002](ADR-002-worker-em-processo-separado-com-polling.md), [ADR-005](ADR-005-entrega-at-least-once-com-x-event-id.md)
 
+## Status
+
+Aceito
+
 ## Contexto
 
 O endpoint do cliente pode estar fora do ar ou lento. Já houve cliente com indisponibilidade de duas horas em manutenção planejada ([09:16] Diego). Precisamos decidir quantas vezes tentar, com que intervalo e o que fazer com o evento quando desistimos.

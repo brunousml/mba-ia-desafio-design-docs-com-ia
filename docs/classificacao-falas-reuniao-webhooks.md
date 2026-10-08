@@ -21,7 +21,7 @@ Decisões da classificação "Definido" que viram trabalho de implementação. C
 | 2 | Criar função `publishWebhookEvent(tx, order, fromStatus, toStatus)` e chamá-la em `order.service` | 09:41 | [FDD](FDD.md):166; [FDD](FDD.md):449; [ADR-006](adrs/ADR-006-reuso-dos-padroes-do-projeto.md):36 | Contemplado |
 | 3 | Filtrar por status na inserção da outbox; não inserir se nenhum webhook do cliente quer o status | 09:34 | [FDD](FDD.md):167; [FDD](FDD.md):484; [RFC](RFC.md):35 | Contemplado |
 | 4 | Gravar o payload renderizado (snapshot) no momento da inserção | 09:52 | [ADR-007](adrs/ADR-007-snapshot-do-payload-na-insercao.md):14; [FDD](FDD.md):168; [PRD](PRD.md):120 | Contemplado |
-| 5 | Criar entry-point `src/worker.ts` e script `npm run worker`, em processo separado da API | 09:11, 09:28 | [ADR-002](adrs/ADR-002-worker-em-processo-separado-com-polling.md):15; [FDD](FDD.md):173, 442, 460, 477 | Contemplado |
+| 5 | Criar entry-point `src/worker.ts` (novo) e script `npm run worker`, em processo separado da API | 09:11, 09:28 | [ADR-002](adrs/ADR-002-worker-em-processo-separado-com-polling.md):15; [FDD](FDD.md):173, 442, 460, 477 | Contemplado |
 | 6 | Implementar polling de 2 segundos com batch pequeno e marcação de status | 09:09, 09:10 | [ADR-002](adrs/ADR-002-worker-em-processo-separado-com-polling.md):14; [ADR-001](adrs/ADR-001-outbox-no-mysql.md):21; [FDD](FDD.md):176 | Contemplado |
 | 7 | Usar instância própria de `PrismaClient` no worker | 09:30 | [ADR-002](adrs/ADR-002-worker-em-processo-separado-com-polling.md):16; [FDD](FDD.md):459 | Contemplado |
 | 8 | Implementar retry com 5 tentativas e backoff 1m/5m/30m/2h/12h | 09:17 | [ADR-003](adrs/ADR-003-retry-com-backoff-e-dlq.md):14; [FDD](FDD.md):194-205, 399; [PRD](PRD.md):107 | Contemplado |
@@ -36,7 +36,7 @@ Decisões da classificação "Definido" que viram trabalho de implementação. C
 | 17 | Montar payload com `event_id`, `event_type`, timestamp ISO 8601, ids e campos básicos da order, sem `items` | 09:43, 09:34 | [ADR-007](adrs/ADR-007-snapshot-do-payload-na-insercao.md):16; [FDD](FDD.md):357-361 | Contemplado |
 | 18 | Implementar CRUD de configuração: `POST`, `PATCH`, `DELETE` e `GET` por customer, com autenticação normal | 09:31, 09:33, 09:32 | [FDD](FDD.md):236-239; [PRD](PRD.md):86 (RF-01) | Contemplado |
 | 19 | Implementar `GET /webhooks/:id/deliveries` com histórico de entregas | 09:34 | [FDD](FDD.md):240, 300, 492 | Contemplado |
-| 20 | Criar módulo `src/modules/webhooks` seguindo o padrão dos demais módulos | 09:27, 09:30 | [FDD](FDD.md):467-477; [ADR-006](adrs/ADR-006-reuso-dos-padroes-do-projeto.md):30; [RFC](RFC.md):41 | Contemplado |
+| 20 | Criar módulo `src/modules/webhooks` (novo) seguindo o padrão dos demais módulos | 09:27, 09:30 | [FDD](FDD.md):467-477; [ADR-006](adrs/ADR-006-reuso-dos-padroes-do-projeto.md):30; [RFC](RFC.md):41 | Contemplado |
 | 21 | Reusar `AppError`, Pino e error middleware, com códigos prefixados por `WEBHOOK_` | 09:28, 09:29, 09:30 | [ADR-006](adrs/ADR-006-reuso-dos-padroes-do-projeto.md):31-32; [FDD](FDD.md):377-392; [RFC](RFC.md):41 | Contemplado |
 | 22 | Documentar a garantia at-least-once e a deduplicação por `X-Event-Id` no portal de desenvolvedor | 09:26, 09:40 | [PRD](PRD.md):68, 126, 157; [ADR-005](adrs/ADR-005-entrega-at-least-once-com-x-event-id.md):16 | Contemplado |
 | 23 | Reservar dois dias úteis para revisão de segurança de Sofia antes do deploy | 09:46, 09:49 | [RFC](RFC.md):77; [FDD](FDD.md):443; [PRD](PRD.md):53; [ADR-004](adrs/ADR-004-hmac-sha256-com-secret-por-endpoint.md):19 | Contemplado |

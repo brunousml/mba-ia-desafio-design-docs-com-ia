@@ -5,6 +5,10 @@
 - **Decisores:** Larissa (Tech Lead), Diego (Plataforma), Bruno (Pedidos)
 - **Relacionados:** [ADR-002](ADR-002-worker-em-processo-separado-com-polling.md), [ADR-005](ADR-005-entrega-at-least-once-com-x-event-id.md), [ADR-007](ADR-007-snapshot-do-payload-na-insercao.md)
 
+## Status
+
+Aceito
+
 ## Contexto
 
 Três clientes B2B querem ser avisados quando o status dos pedidos muda, em menos de 10 segundos ([09:00] e [09:02] Marcos). A mudança de status acontece em `OrderService.changeStatus` (`src/modules/orders/order.service.ts`), dentro de um `prisma.$transaction` que já atualiza `orders`, insere em `order_status_history` e mexe no estoque dos produtos ([09:04] Bruno).

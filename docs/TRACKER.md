@@ -58,6 +58,7 @@ Este tracker liga cada requisito, decisão, alternativa descartada, contrato, er
 | RFC-QA-04 | `docs/RFC.md` | Questão em aberto | customer_id no body ou no path: reunião não escolheu; proposta do FDD para path /customers/:customerId/webhooks | TRANSCRICAO | [09:32] Larissa |
 | RFC-QA-05 | `docs/RFC.md` | Questão em aberto | Caminho da rotação de secret: proposta do FDD para POST /webhooks/:id/rotate-secret, motivada pela carência de 24 h | TRANSCRICAO | [09:21] Sofia |
 | RFC-QA-06 | `docs/RFC.md` | Questão em aberto | Assinatura durante a carência: proposta do FDD para enviar duas assinaturas em X-Signature, pendente de revisão da Sofia | TRANSCRICAO | [09:21] Sofia |
+| RFC-QA-07 | `docs/RFC.md` | Questão em aberto | Proteção da secret em repouso: HMAC exige a secret em claro; não discutido na reunião, entra na revisão de segurança de 2 dias úteis | TRANSCRICAO | [09:46] Sofia |
 | RFC-PROP-01 | `docs/RFC.md` | Decisão | Outbox no MySQL existente, com registro na mesma transação da mudança de status | TRANSCRICAO | [09:08] Larissa |
 | RFC-PROP-02 | `docs/RFC.md` | Decisão | Worker em processo separado, com polling de 2 s | TRANSCRICAO | [09:10] Larissa |
 | RFC-PROP-03 | `docs/RFC.md` | Decisão | 5 tentativas com backoff 1m, 5m, 30m, 2h e 12h; depois DLQ em tabela separada | TRANSCRICAO | [09:17] Larissa |

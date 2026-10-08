@@ -118,6 +118,7 @@ model WebhookDelivery {
   success        Boolean
   responseStatus Int?
   responseBody   String?  @db.Text
+  payload        Json     // conteúdo enviado (snapshot, ADR-007); a linha da outbox some ao virar DELIVERED
   durationMs     Int
   error          String?  @db.VarChar(500)
   createdAt      DateTime @default(now())
@@ -180,9 +181,9 @@ a cada 2 s:
        LIMIT <lote pequeno>
   2. para cada evento, em ordem:
        a. marca PROCESSING
-       b. carrega o endpoint; se inativo ou removido → move para DLQ com motivo "endpoint inativo" (proposta deste FDD)
+       b. carrega o endpoint; se inativo → move para DLQ com motivo "endpoint inativo" (proposta deste FDD; a remoção já move os pendentes, ver E4)
        c. assina o corpo (payload exato gravado) e faz POST com timeout de 10 s
-       d. grava uma linha em webhook_deliveries (status HTTP, corpo da resposta, duração, erro)
+       d. grava uma linha em webhook_deliveries (payload enviado, status HTTP, corpo da resposta, duração, erro)
        e. 2xx → DELIVERED
           caso contrário → fluxo de retry (5.3)
 ```
@@ -289,15 +290,27 @@ Validação (Zod): `url` obrigatória e com protocolo `https` ([09:23] Sofia); `
 { "url": "https://erp.atlas.example/v2/hooks", "statuses": ["PAID", "SHIPPED"], "active": false }
 ```
 
-Todos os campos opcionais, pelo menos um obrigatório. `200 OK` com o recurso (sem `secret`). Erros: 404 `WEBHOOK_NOT_FOUND`, 400 `WEBHOOK_INVALID_URL`. Tentar enviar `secret` no body retorna 400 `VALIDATION_ERROR` — secret só muda por E6.
+Todos os campos opcionais, pelo menos um obrigatório. `200 OK` com o recurso (sem `secret`):
+
+```json
+{ "id": "c2f0…", "url": "https://erp.atlas.example/v2/hooks", "statuses": ["PAID", "SHIPPED"], "active": false, "updatedAt": "2026-10-08T12:05:00.000Z" }
+```
+
+Erros: 404 `WEBHOOK_NOT_FOUND`, 400 `WEBHOOK_INVALID_URL`. Tentar enviar `secret` no body retorna 400 `VALIDATION_ERROR` — secret só muda por E6.
 
 ### E4 — Remover webhook
 
-`204 No Content`. Erro: 404 `WEBHOOK_NOT_FOUND`. Eventos pendentes desse endpoint vão para a DLQ com motivo "endpoint inativo" quando o worker os pegar (5.2-b).
+`204 No Content`. Erro: 404 `WEBHOOK_NOT_FOUND`.
+
+Na mesma transação da remoção, as linhas ainda pendentes desse endpoint em `webhook_outbox` são movidas para `webhook_dead_letter` com motivo "endpoint removido", e só depois o endpoint é apagado. Sem esse passo, a chave estrangeira de `webhook_outbox` impediria o `DELETE`. O histórico de `webhook_deliveries` é apagado junto (`onDelete: Cascade`). Itens da DLQ de um endpoint removido não podem ser reenviados (E7 responde 404 `WEBHOOK_NOT_FOUND`). *Proposta deste FDD: a reunião definiu só que existe um `DELETE` ([09:33] Bruno).*
 
 ### E5 — Histórico de entregas
 
-`GET /api/v1/webhooks/:id/deliveries` — últimas 100 tentativas ([09:34] Marcos); ordenação da mais recente para a mais antiga é proposta deste FDD.
+```http
+GET /api/v1/webhooks/c2f0…/deliveries
+```
+
+Últimas 100 tentativas ([09:34] Marcos); ordenação da mais recente para a mais antiga é proposta deste FDD.
 
 ```json
 {
@@ -321,6 +334,10 @@ Erro: 404 `WEBHOOK_NOT_FOUND`.
 
 ### E6 — Rotacionar secret
 
+```http
+POST /api/v1/webhooks/c2f0…/rotate-secret
+```
+
 Sem body. `200 OK`:
 
 ```json
@@ -337,7 +354,7 @@ Erros: 404 `WEBHOOK_NOT_FOUND`; 409 `WEBHOOK_SECRET_ROTATION_IN_PROGRESS` se já
 { "eventId": "5a7d…", "status": "PENDING", "replayedBy": "a1b2…" }
 ```
 
-Erros: 401 `UNAUTHORIZED`, 403 `FORBIDDEN` (não-ADMIN, via `requireRole`), 404 `WEBHOOK_DEAD_LETTER_NOT_FOUND`, 409 `WEBHOOK_ALREADY_REPLAYED`.
+Erros: 401 `UNAUTHORIZED`, 403 `FORBIDDEN` (não-ADMIN, via `requireRole`), 404 `WEBHOOK_DEAD_LETTER_NOT_FOUND`, 404 `WEBHOOK_NOT_FOUND` (o endpoint do item foi removido), 409 `WEBHOOK_ALREADY_REPLAYED`.
 
 ### Envio para o cliente (contrato de saída)
 

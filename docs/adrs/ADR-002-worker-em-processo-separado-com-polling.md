@@ -5,6 +5,10 @@
 - **Decisores:** Larissa, Diego, Bruno; Marcos validou a latência
 - **Relacionados:** [ADR-001](ADR-001-outbox-no-mysql.md), [ADR-003](ADR-003-retry-com-backoff-e-dlq.md)
 
+## Status
+
+Aceito
+
 ## Contexto
 
 Com a outbox definida ([ADR-001](ADR-001-outbox-no-mysql.md)), falta decidir **como** e **onde** os eventos pendentes são lidos e enviados. O requisito de produto é entrega abaixo de 10 segundos ([09:02] Marcos). O projeto tem hoje uma única entry point, `src/server.ts`, que sobe a API HTTP.

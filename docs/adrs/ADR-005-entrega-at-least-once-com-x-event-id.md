@@ -5,6 +5,10 @@
 - **Decisores:** Diego, Larissa; Sofia e Marcos de acordo
 - **Relacionados:** [ADR-001](ADR-001-outbox-no-mysql.md), [ADR-003](ADR-003-retry-com-backoff-e-dlq.md)
 
+## Status
+
+Aceito
+
 ## Contexto
 
 Com outbox e retry ([ADR-001](ADR-001-outbox-no-mysql.md), [ADR-003](ADR-003-retry-com-backoff-e-dlq.md)), existem cenários em que o cliente recebe o mesmo evento mais de uma vez — por exemplo, o cliente processa a chamada, mas a resposta não chega antes do timeout e o worker tenta de novo. É preciso definir qual garantia a plataforma oferece.

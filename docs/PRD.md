@@ -83,7 +83,7 @@ Nota: não há meta quantitativa de redução de consultas à API. A reunião n�
 
 | ID | Requisito | Origem |
 | --- | --- | --- |
-| RF-01 | Cadastrar um endereço de envio para um cliente, informando o endereço e os status de interesse. A chave de assinatura é gerada pela plataforma e devolvida na criação. O cliente é identificado na própria requisição, e não pelo login do operador (ver seção 10 e seção 9). | [09:31] Marcos |
+| RF-01 | Cadastrar um endereço de envio para um cliente, informando o endereço e os status de interesse. A chave de assinatura é gerada pela plataforma e devolvida na criação. O cliente é identificado na própria requisição, e não pelo login do operador (ver questões 4 e 5 da [RFC](RFC.md)). | [09:31] Marcos |
 | RF-02 | Editar um cadastro existente de endereço de envio. | [09:33] Bruno |
 | RF-03 | Remover um cadastro de endereço de envio. | [09:33] Bruno |
 | RF-04 | Listar os cadastros de endereço de envio de um cliente. | [09:33] Bruno |
@@ -127,7 +127,7 @@ Nota: não há meta quantitativa de redução de consultas à API. A reunião n�
 - **Clientes deduplicarem avisos.** A garantia de entrega depende de o cliente tratar repetições ([09:25] Diego).
 - **Perfis de usuário existentes.** O reenvio manual usa o controle de perfis já existente, com o perfil ADMIN ([09:36] Larissa).
 - **Infraestrutura atual.** Usa o banco de dados e a stack já em produção. Não há previsão de nova infraestrutura ([09:07] Diego).
-- **Decisões de cadastro em aberto.** Como o cliente é identificado na requisição (corpo ou caminho) e o formato do caminho de rotação da chave ainda não foram fechados (ver seção 10).
+- **Decisões de cadastro em aberto.** Como o cliente é identificado na requisição (corpo ou caminho) e o formato do caminho de rotação da chave ainda não foram fechados (ver questões 4 e 5 da [RFC](RFC.md)).
 
 ## 10. Riscos e mitigação
 
