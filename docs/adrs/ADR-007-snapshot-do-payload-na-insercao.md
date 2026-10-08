@@ -5,6 +5,10 @@
 - **Decisores:** Larissa, Diego, Bruno
 - **Relacionados:** [ADR-001](ADR-001-outbox-no-mysql.md)
 
+## Status
+
+Aceito
+
 ## Contexto
 
 O evento da outbox pode guardar o payload já montado ou só o `order_id`, montando o JSON no momento do envio ([09:51] Bruno). Entre a mudança de status e o envio podem passar segundos ou, com retry, até ~15 horas (ver [ADR-003](ADR-003-retry-com-backoff-e-dlq.md)).

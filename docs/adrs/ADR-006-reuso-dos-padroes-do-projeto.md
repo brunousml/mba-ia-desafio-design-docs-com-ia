@@ -5,6 +5,10 @@
 - **Decisores:** Larissa, Bruno, Diego
 - **Relacionados:** [ADR-002](ADR-002-worker-em-processo-separado-com-polling.md)
 
+## Status
+
+Aceito
+
 ## Contexto
 
 O Order Management System já tem convenções claras de organização e infraestrutura. A dúvida era se o webhook seguiria essas convenções ou traria peças novas (logger, formato de erro, estrutura de pastas).
@@ -27,7 +31,7 @@ O que existe hoje no código:
 
 Reuso máximo do que já existe ([09:30] Larissa):
 
-- Novo módulo **`src/modules/webhooks`** com a mesma estrutura dos demais ([09:27] Bruno). A lógica do worker fica dentro do módulo (ex.: `webhook.processor.ts`) e a entry point em `src/worker.ts` (novo) ([09:28] Bruno).
+- Novo módulo **`src/modules/webhooks`** com a mesma estrutura dos demais ([09:27] Bruno). A lógica do worker fica dentro do módulo (ex.: `webhook.processor.ts` (novo)) e a entry point em `src/worker.ts` (novo) ([09:28] Bruno).
 - Erros como subclasses de `AppError`, com **prefixo `WEBHOOK_`** nos códigos: `WEBHOOK_NOT_FOUND`, `WEBHOOK_INVALID_URL`, `WEBHOOK_SECRET_REQUIRED` etc. ([09:28] Bruno, [09:29] Larissa).
 - **Pino** como logger, sem biblioteca nova; o **error middleware** centralizado trata os erros novos sem alteração ([09:29] Bruno).
 - Schemas **Zod** para validação, incluindo a regra de URL `https` ([09:23] Sofia).
